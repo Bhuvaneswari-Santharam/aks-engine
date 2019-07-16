@@ -61,7 +61,7 @@ func GenerateARMResources(cs *api.ContainerService) []interface{} {
 			armResources = append(armResources, createRouteTable())
 		}
 
-		hostedMasterNsg := createHostedMasterNSG()
+		//hostedMasterNsg := createHostedMasterNSG()
 		armResources = append(armResources, hostedMasterNsg)
 	} else {
 		isMasterVMSS := cs.Properties.MasterProfile != nil && cs.Properties.MasterProfile.IsVirtualMachineScaleSets()
