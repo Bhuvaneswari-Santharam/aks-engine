@@ -130,15 +130,17 @@ func createKubernetesMasterResourcesVMAS(cs *api.ContainerService, isUpgrade boo
 	return masterResources
 }
 
-func createKubernetesMasterResourcesVMSS(cs *api.ContainerService) []interface{} {
+func createKubernetesMasterResourcesVMSS(cs *api.ContainerService, isUpgrade bool, isScale bool) []interface{} {
 	var masterResources []interface{}
 
 	if cs.Properties.MasterProfile.HasCosmosEtcd() {
 		masterResources = append(masterResources, createCosmosDBAccount())
 	}
 
-	masterNSG := CreateNetworkSecurityGroup(cs)
-	masterResources = append(masterResources, masterNSG)
+	if !isUpgrade && !isScale {
+		masterNSG := CreateNetworkSecurityGroup(cs)
+		masterResources = append(masterResources, masterNSG)
+	}
 
 	if cs.Properties.OrchestratorProfile.RequireRouteTable() {
 		masterResources = append(masterResources, createRouteTable())
