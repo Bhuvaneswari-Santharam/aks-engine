@@ -191,7 +191,7 @@ func (gc *generateCmd) run() error {
 	//bts, _ := json.Marshal(gc.containerService)
 	//log.Info(string(bts))
 
-	template, parameters, err := templateGenerator.GenerateTemplateV2(gc.containerService, engine.DefaultGeneratorCode, BuildTag)
+	template, parameters, err := templateGenerator.GenerateTemplateV2(gc.containerService, engine.DefaultGeneratorCode, BuildTag, false, false)
 	if err != nil {
 		return errors.Wrapf(err, "generating template %s", gc.apimodelPath)
 	}

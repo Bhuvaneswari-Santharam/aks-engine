@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/to"
 )
 
-func GenerateARMResources(cs *api.ContainerService) []interface{} {
+func GenerateARMResources(cs *api.ContainerService, isUpgrade bool, isScale bool) []interface{} {
 	var armResources []interface{}
 
 	var useManagedIdentity, userAssignedIDEnabled bool
@@ -61,15 +61,15 @@ func GenerateARMResources(cs *api.ContainerService) []interface{} {
 			armResources = append(armResources, createRouteTable())
 		}
 
-		//hostedMasterNsg := createHostedMasterNSG()
+		hostedMasterNsg := createHostedMasterNSG()
 		armResources = append(armResources, hostedMasterNsg)
 	} else {
 		isMasterVMSS := cs.Properties.MasterProfile != nil && cs.Properties.MasterProfile.IsVirtualMachineScaleSets()
 		var masterResources []interface{}
 		if isMasterVMSS {
-			masterResources = createKubernetesMasterResourcesVMSS(cs)
+			masterResources = createKubernetesMasterResourcesVMSS(cs, isUpgrade, isScale)
 		} else {
-			masterResources = createKubernetesMasterResourcesVMAS(cs)
+			masterResources = createKubernetesMasterResourcesVMAS(cs, isUpgrade, isScale)
 		}
 
 		armResources = append(armResources, masterResources...)

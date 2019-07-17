@@ -637,10 +637,10 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 	}
 }
 
-func (t *TemplateGenerator) GenerateTemplateV2(containerService *api.ContainerService, generatorCode string, acsengineVersion string) (templateRaw string, parametersRaw string, err error) {
+func (t *TemplateGenerator) GenerateTemplateV2(containerService *api.ContainerService, generatorCode string, acsengineVersion string, isUpgrade bool, isScale bool) (templateRaw string, parametersRaw string, err error) {
 
 	armParams, _ := t.getParameterDescMap(containerService)
-	armResources := GenerateARMResources(containerService)
+	armResources := GenerateARMResources(containerService, isUpgrade, isScale)
 	armVariables, err := GetKubernetesVariables(containerService)
 	if err != nil {
 		return "", "", err

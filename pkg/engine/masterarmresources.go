@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/to"
 )
 
-func createKubernetesMasterResourcesVMAS(cs *api.ContainerService) []interface{} {
+func createKubernetesMasterResourcesVMAS(cs *api.ContainerService, isUpgrade bool, isScale bool) []interface{} {
 	var masterResources []interface{}
 
 	p := cs.Properties
@@ -31,9 +31,10 @@ func createKubernetesMasterResourcesVMAS(cs *api.ContainerService) []interface{}
 		virtualNetwork := CreateVirtualNetwork(cs)
 		masterResources = append(masterResources, virtualNetwork)
 	}
-
-	masterNsg := CreateNetworkSecurityGroup(cs)
-	masterResources = append(masterResources, masterNsg)
+	if !isUpgrade && !isScale {
+		masterNsg := CreateNetworkSecurityGroup(cs)
+		masterResources = append(masterResources, masterNsg)
+	}
 
 	if cs.Properties.OrchestratorProfile.RequireRouteTable() {
 		masterResources = append(masterResources, createRouteTable())

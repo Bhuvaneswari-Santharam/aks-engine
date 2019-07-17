@@ -26,7 +26,7 @@ func TestGenerateTemplateV2(t *testing.T) {
 		t.Errorf("unexpected error while unmarshalling the apiModel JSON: %s", err.Error())
 	}
 
-	_, _, err = tg.GenerateTemplateV2(cs, DefaultGeneratorCode, TestAKSEngineVersion)
+	_, _, err = tg.GenerateTemplateV2(cs, DefaultGeneratorCode, TestAKSEngineVersion, false, false)
 
 	if err != nil {
 		t.Errorf("unexpected error while running getParameterDescMap: %s", err.Error())
